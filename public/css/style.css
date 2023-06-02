@@ -1,0 +1,250 @@
+
+/* 商品一覧 */
+.container {
+    margin: 30px;
+    display: flex;
+}
+.btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #2589d0;
+    color: #fff;
+    font-weight: 300;
+    font-size: 15px;
+}
+
+.container button:hover{
+    background-color: #1579c0;
+}
+
+.alert {
+    padding: 15px;
+}
+
+.select {
+    display: flex;
+}
+
+.select-company {
+    flex-shrink: 0;
+    z-index: 10;
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 16px;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 500;
+    text-align: center;
+    color: #111827;
+    background-color: #f3f4f6;
+    border: 1px solid #767d83;
+    border-right: #f3f4f6;
+    border-bottom-left-radius: 8px;
+    border-top-left-radius: 8px;
+}
+
+.select-company:hover {
+    background-color: #e5e7eb;
+}
+
+.keyword {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden;
+    border: 1px solid #767d83;
+    border-bottom-right-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.keyword-box {
+    width: 250px;
+    height: 45px;
+    padding: 5px 15px;
+    border: none;
+    box-sizing: border-box;
+    font-size: 1em;
+    outline: none;
+}
+
+.keyword button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 45px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.keyword button::after {
+    width: 20px;
+    height: 20px;
+    background-image: url('data:image/svg+xml;charset=utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%3E%20%3Cpath%20d%3D%22M23.7%2020.8%2019%2016.1c-.2-.2-.5-.3-.8-.3h-.8c1.3-1.7%202-3.7%202-6C19.5%204.4%2015.1%200%209.7%200S0%204.4%200%209.7s4.4%209.7%209.7%209.7c2.3%200%204.3-.8%206-2v.8c0%20.3.1.6.3.8l4.7%204.7c.4.4%201.2.4%201.6%200l1.3-1.3c.5-.5.5-1.2.1-1.6zm-14-5.1c-3.3%200-6-2.7-6-6s2.7-6%206-6%206%202.7%206%206-2.6%206-6%206z%22%20fill%3D%22%23767d83%22%3E%3C%2Fpath%3E%20%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    content: '';
+}
+
+
+.table-container {
+    position: relative;
+    overflow-x: auto;
+    text-shadow: 0 4px 6px -1px #0000001a, 0 2px 4px -2px #0000001a;
+    box-shadow: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.table {
+    width: 100%;
+    font-size: 15px;
+    line-height: 20px;
+    text-align: left;
+    color: #6b7280;
+}
+
+.table thead {
+    font-size: 12px;
+    line-height: 16px; 
+    color: #374151;   
+    text-transform: uppercase;
+    background-color: #f9fafb;
+}
+
+.table-header {
+    padding: 12px 24px;
+
+}
+
+.table-row {
+    background-color: #ffffff;
+    border-bottom-width: 1px;
+}
+
+.table-data {
+    padding: 16px 24px;
+
+}
+
+.table-data button {
+    font-weight: 500;
+    color: #2563eb;
+    text-decoration-line: underline;
+}
+
+
+
+/* 新規登録/更新 */
+.create-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px;
+}
+
+.wrapper {
+    max-width: 550px;
+    margin: 0 auto;
+    width: 70%;
+}
+
+.form {
+    margin-bottom: 20px;
+}
+
+.form label {
+    margin-bottom: 12px;
+    display: block;
+    font-size: 16px;
+    line-height: 24px;
+    color: #07074d;
+}
+
+.form .input {
+   width: 100%;
+   border-radius: 6px;
+   border: 1px solid #e0e0e0;
+   padding: 12px 24px;
+   font-size: 16px;
+   line-height: 24px; 
+   color: #6b7280;
+   background-color: #ffffff
+}
+.form select {
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+    padding: 12px 24px;
+    font-size: 16px;
+    line-height: 24px; 
+    color: #6b7280;
+    background-color: #ffffff
+}
+
+ .form textarea {
+    width: 100%;
+    border-radius: 6px;
+    resize: none;
+    border: 1px solid #e0e0e0;
+    background-color: #ffffff;
+    padding: 12px 24px;
+    font-size: 16px;
+    line-height: 24px; 
+    color: #6b7280;
+}
+
+.form .image {
+    padding: auto;
+}
+
+.back-page {
+    padding: 48px;
+}
+
+.back-btn {
+    font-weight: 500;
+    color: #2563eb;
+    text-decoration-line: underline;
+}
+
+.btn[type="submit"] {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #2589d0;
+    color: #fff;
+    font-weight: 300;
+    font-size: 15px;
+}
+
+.btn:hover{
+    background-color: #1579c0;
+}
+
+.img {
+    width: 70%;
+    padding-bottom: 15px;
+}
+
+/* 詳細ページ */
+.show-container {
+    width: 100%;
+    margin-top: 40px;
+}
+
+table th {
+    padding: 15px;
+}
+
+table td {
+    padding: 15px;
+}
