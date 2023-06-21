@@ -1,15 +1,14 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            変更画面
+            編集画面
         </h2>
     </x-slot>
 
     {{-- 編集フォーム --}}
     <div class="create-container">
         <div class="wrapper">
-            <form method="post" action="{{ route('update', $product->id) }}" enctype="multipart/form-data">
-                @method('PUT')
+            <form method="post" action="{{ route('update', ['id' => $product->id ]) }}" enctype="multipart/form-data">
                 @csrf
                 <div class="form">
                     <div>ID : {{ $product->id }}</div>

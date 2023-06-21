@@ -28,7 +28,7 @@
             <img class="img" src="{{ asset('storage/image/' . $product->image_path) }}" />
         </div>
         <div>
-            <button class="btn" onclick="window.location.href='{{ route('edit', $product->id) }}'">編集</button>
+            <button class="btn" onclick="window.location.href='{{ route('edit', ['id' => $product->id]) }}'">編集</button>
         </div>
     </div>
     <div class="back-page">

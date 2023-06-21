@@ -64,10 +64,10 @@
               <td class="table-data">{{ $product->stock }}</td>
               <td class="table-data">{{ $product->company->company_name }}</td>
               <td class="table-data">
-                <button onclick="window.location.href='{{ route('show', $product->id) }}'">詳細</button>
+                <button onclick="window.location.href='{{ route('show', ['id' => $product->id]) }}'">詳細</button>
               </td>
               <td class="table-data">
-                <form method="post" action="{{ route('delete',$product->id) }}">
+                <form method="post" action="{{ route('delete',['id' => $product->id]) }}">
                   @csrf
                   @method('DELETE')
                   <button type="submit" onclick='return confirm("削除しますか？");'>削除</button>
@@ -75,7 +75,9 @@
               </td>
           </tr>
         @endforeach
+        
       </tbody>
     </table>
+      {{ $products->links() }}
   </div>
 </x-app-layout>

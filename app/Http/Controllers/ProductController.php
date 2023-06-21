@@ -5,134 +5,133 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Company;
 use Illuminate\Http\Request;
+use App\Http\Requests\ProductRequest;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+
+
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(Request $request) {
-        $products = Product::all();
-        $companies = Company::all();
 
-        return view('index', compact('products', 'companies'));
+    // 商品一覧画面
+    public function index() {
+        $product = new Product();
+        $company = new Company();
+        $products = $product->getAllDataWithCompany();
+        $companies = $company->index();
+        return view('index', ['products' => $products,'companies' => $companies]);        
     }
     
+    // 検索機能
     public function search(Request $request) {
-        $keyword = $request->input('keyword');
-        $companyId = $request->input('company');
+        $searchQuery = $request->input('keyword');
+        $searchQuery2 = $request->input('company');
+        DB::beginTransaction();
 
-        $query = Product::query();
-
-        if ($keyword!=null) {
-            $query->where('product_name', 'like', '%' .$keyword. '%');
+        try {
+            $product = new Product();
+            $company = new Company();
+            $companies = $company->index();
+            $products = $product->getSearchData($searchQuery, $searchQuery2);
+            DB::commit();
+        }catch (\Exception $e){
+            DB::rollback();
+            return back();
         }
-
-        if ($companyId!=null) {
-            $query->where('company_id', $companyId);
-        }
-
-        $products = $query->get();
-        $companies = Company::all();
-
-        return view('index', compact('products', 'companies'));
+        return view('index', ['products' => $products,'companies' => $companies]);  
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    // 新規登録画面の表示
     public function create() {
-        $companies = Company::all();
-        return view('create')
-        ->with('companies', $companies);
-
+        $model = new Company();
+        $companies = $model->index();
+        return view('create', ['companies' => $companies]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request) {
-        $request->validate([
-            'product_name' => 'required|max:20',
-            'price' => 'required|min:0',
-            'stock' => 'required|min:0',
-            'image' => 'image'
-        ]);
+    // 新規登録
+    public function store(ProductRequest $request) {
+        $data = $request->all();
+        $image_path = $request->file('image_path');
+        DB::beginTransaction();
 
-        if (request('image_path')) {
-            $original = request()->file('image_path')->getClientOriginalName();
-            $name = date('Ymd_His').'_'.$original;
-            $file = request()->file('image_path')->move('storage/image', $name);
-            $product->image_path=$name;
+        try {
+            $model = new Product();
+            $model->store($data, $image_path);
+            DB::commit();
+        } catch (\Exception $e){
+            DB::rollback();
+            return back();
         }
-        
-        $product = new Product;
-        $product->company_id = $request->input('company_id');
-        $product->product_name = $request->input('product_name');
-        $product->price = $request->input('price');
-        $product->stock = $request->input('stock');
-        $product->comment = $request->input('comment');
-        
-        $product->save();
-
         return redirect()->route('index')->with('success', '商品を登録しました。');
-        
+    }
+
+    // 詳細画面の表示
+    public function show ($id) {
+        $model = new Product();
+        $model2 = new Company();
+        $product = $model->find($id);
+        $companies = $model2->index();
+            
+        return view('show',['product' => $product, 'companies' => $companies]);
+    }
+
+    // 編集画面の表示
+    public function edit ($id) {
+        $model = new Product();
+        $model2 = new Company();
+        $product = $model->find($id);
+        $companies = $model2->index();
+
+        return view('edit',['product' => $product, 'companies' => $companies]);
         
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show (Product $product) {
-        $companies = Company::all();
-        return view('show',compact('product'))
-            ->with('companies',$companies);
-    }
+    // 更新
+    public function update(ProductRequest $request, $id) {
+        $data = $request->all();
+        $image_path = $request->file('image_path');
+        DB::beginTransaction();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit (Product $product) {
-        $companies = Company::all();
-        return view('edit',compact('product'))
-            ->with('companies',$companies);
-
-        
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update (Request $request, Product $product) {
-        $request->validate ([
-            'product_name' => 'required | max:20',
-            'price' => 'required | min:0',
-            'stock' => 'required | min:0',
-            'comment' => 'required',
-            'company_id' => 'required',   
-        ]);
-        $product->company_id = $request->input ('company_id');
-        $product->product_name = $request->input ('product_name');
-        $product->price = $request->input ('price');
-        $product->stock = $request->input ('stock');
-        $product->comment = $request->input ('comment');
-        if (request('image_path')) {
-            Storage::disk('public')->delete('$product->image_path');
-            $original = request()->file('image_path')->getClientOriginalName();
-            $name = date('Ymd_His').'_'.$original;
-            $product->image_path = request()->file('image_path')->move('storage/image', $name);
-            $product->image_path=$name;
+        try {
+            $model = new Product();
+            $product = $model->find($id);
+            $product->updateData($data, $image_path);
+            // $oldImage = $model->delImage($id);
+            // $model->delImage($id);
+            // $edit = $product->find($product->id);
+            // if ($request->hasFile('image_path')){
+                
+                // $original = $image_path->getClientOriginalName();
+                // $name = date('Ymd_His').'_'.$original;
+                // $image_path->move('storage/image', $name);
+                // $this->image_path = $name;
+            //     $path = $request->file('image_path')->store('public/image');
+            //     $product->image_path = basename($path);
+            // }
+            $product->save();
+            DB::commit();
+        } catch (\Exception $e){
+            dd($e->getMessage()); 
+            // DB::rollback();
+            // return back();
         }
-        $product->save();
-        return redirect()->route('index')->with('success', '商品詳細を変更しました。');
+        return redirect()->route('index')->with('success', '商品詳細を更新しました。');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Product $product) {
-        $product->delete();
-        return redirect()->route('index')->with('success', $product->product_name.'を削除しました。');
+    // 削除
+    public function destroy($id) {
+        DB::beginTransaction();
+
+        try {
+            $model = new Product();
+            $product = $model->find($id);
+            $product->delete();
+            DB::commit();
+        } catch (\Exception $e){
+            DB::rollback();
+            return back();
+        }
+        return redirect()->route('index')->with('success', '削除しました。');
     }
 }
