@@ -16,24 +16,24 @@ class ProductController extends Controller
 
     // 商品一覧画面
     public function index() {
-        $product = new Product();
-        $company = new Company();
-        $products = $product->getAllDataWithCompany();
-        $companies = $company->index();
+        $product_model = new Product();
+        $company_model = new Company();
+        $products = $product_model->index();
+        $companies = $company_model->index();
         return view('index', ['products' => $products,'companies' => $companies]);        
     }
     
     // 検索機能
     public function search(Request $request) {
-        $searchQuery = $request->input('keyword');
-        $searchQuery2 = $request->input('company');
+        $search_product = $request->input('keyword');
+        $search_company = $request->input('company');
         DB::beginTransaction();
 
         try {
-            $product = new Product();
-            $company = new Company();
-            $companies = $company->index();
-            $products = $product->getSearchData($searchQuery, $searchQuery2);
+            $product_model = new Product();
+            $company_model = new Company();
+            $companies = $company_model->index();
+            $products = $product_model->getProductSearch($search_product, $search_company);
             DB::commit();
         }catch (\Exception $e){
             DB::rollback();
@@ -44,8 +44,8 @@ class ProductController extends Controller
 
     // 新規登録画面の表示
     public function create() {
-        $model = new Company();
-        $companies = $model->index();
+        $company_model = new Company();
+        $companies = $company_model->index();
         return view('create', ['companies' => $companies]);
     }
 
@@ -56,8 +56,8 @@ class ProductController extends Controller
         DB::beginTransaction();
 
         try {
-            $model = new Product();
-            $model->store($data, $image_path);
+            $product_model = new Product();
+            $product_model->store($data, $image_path);
             DB::commit();
         } catch (\Exception $e){
             DB::rollback();
@@ -68,23 +68,19 @@ class ProductController extends Controller
 
     // 詳細画面の表示
     public function show ($id) {
-        $model = new Product();
-        $model2 = new Company();
-        $product = $model->find($id);
-        $companies = $model2->index();
-            
-        return view('show',['product' => $product, 'companies' => $companies]);
+        $product_model = new Product();
+        $product = $product_model->detail($id);            
+        return view('show',['product' => $product]);
     }
 
     // 編集画面の表示
     public function edit ($id) {
-        $model = new Product();
-        $model2 = new Company();
-        $product = $model->find($id);
-        $companies = $model2->index();
+        $product_model = new Product();
+        $company_model = new Company();
+        $product = $product_model->detail($id);
+        $companies = $company_model->index();
 
         return view('edit',['product' => $product, 'companies' => $companies]);
-        
     }
 
     // 更新
@@ -94,27 +90,12 @@ class ProductController extends Controller
         DB::beginTransaction();
 
         try {
-            $model = new Product();
-            $product = $model->find($id);
-            $product->updateData($data, $image_path);
-            // $oldImage = $model->delImage($id);
-            // $model->delImage($id);
-            // $edit = $product->find($product->id);
-            // if ($request->hasFile('image_path')){
-                
-                // $original = $image_path->getClientOriginalName();
-                // $name = date('Ymd_His').'_'.$original;
-                // $image_path->move('storage/image', $name);
-                // $this->image_path = $name;
-            //     $path = $request->file('image_path')->store('public/image');
-            //     $product->image_path = basename($path);
-            // }
-            $product->save();
+            $product_model = new Product();
+            $product_model->updateData($id, $data, $image_path);
             DB::commit();
         } catch (\Exception $e){
-            dd($e->getMessage()); 
-            // DB::rollback();
-            // return back();
+            DB::rollback();
+            return back();
         }
         return redirect()->route('index')->with('success', '商品詳細を更新しました。');
     }
@@ -122,11 +103,10 @@ class ProductController extends Controller
     // 削除
     public function destroy($id) {
         DB::beginTransaction();
-
+        
         try {
             $model = new Product();
-            $product = $model->find($id);
-            $product->delete();
+            $product = $model->deleteProduct($id);
             DB::commit();
         } catch (\Exception $e){
             DB::rollback();

@@ -13,15 +13,7 @@
                 <tr><th>商品名</th><td>{{ $product->product_name }}</td></tr>
                 <tr><th>価格</th><td>{{ $product->price }}</td></tr>
                 <tr><th>在庫数</th><td>{{ $product->stock }}</td></tr>
-                <tr><th>メーカー</th>
-                    <td>
-                        @foreach($companies as $company)
-                            <div>
-                                @if($company->id == $product->company_id) {{ $company->company_name }}@endif
-                            </div>
-                        @endforeach
-                    </td>
-                </tr>
+                <tr><th>メーカー</th><td>{{ $product->company_name }}</td></tr>
                 <tr><th>商品詳細</th><td>{{ $product->comment }}</td></tr>
             </table>
         <div>

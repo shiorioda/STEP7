@@ -62,7 +62,7 @@
               <td class="table-data">{{ $product->product_name }}</td>
               <td class="table-data">{{ $product->price }}</td>
               <td class="table-data">{{ $product->stock }}</td>
-              <td class="table-data">{{ $product->company->company_name }}</td>
+              <td class="table-data">{{ $product->company_name }}</td>
               <td class="table-data">
                 <button onclick="window.location.href='{{ route('show', ['id' => $product->id]) }}'">詳細</button>
               </td>
