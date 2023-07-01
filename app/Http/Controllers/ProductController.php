@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ProductRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Config;
+
 
 
 
@@ -63,7 +65,7 @@ class ProductController extends Controller
             DB::rollback();
             return back();
         }
-        return redirect()->route('index')->with('success', '商品を登録しました。');
+        return redirect()->route('index')->with('success', config('message.create_success'));
     }
 
     // 詳細画面の表示
@@ -97,7 +99,7 @@ class ProductController extends Controller
             DB::rollback();
             return back();
         }
-        return redirect()->route('index')->with('success', '商品詳細を更新しました。');
+        return redirect()->route('index')->with('success',config('message.update_success'));
     }
 
     // 削除
@@ -112,6 +114,6 @@ class ProductController extends Controller
             DB::rollback();
             return back();
         }
-        return redirect()->route('index')->with('success', '削除しました。');
+        return redirect()->route('index')->with('success', config('message.delete_success'));
     }
 }

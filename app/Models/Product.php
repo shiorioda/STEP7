@@ -62,7 +62,7 @@ class Product extends Model
     }
 
 
-    public function updateData($id, $data) {
+    public function updateData($id, $data, $image_path) {
         $products = Product::find($id);
         $products->product_name = $data['product_name'];
         $products->price = $data['price'];
