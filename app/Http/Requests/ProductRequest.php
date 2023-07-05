@@ -23,11 +23,9 @@ class ProductRequest extends FormRequest
     {
         return [
             'product_name' => 'required|max:20',
-            'comment' => 'required|max:200',
             'company_id' => 'required',
             'price' => 'required|min:0',
             'stock' => 'required|min:0',
-            'image_path' => 'required'
         ];
     }
 
@@ -37,9 +35,8 @@ class ProductRequest extends FormRequest
         'product_name' => '商品名',
         'price' => '価格',
         'stock' => '在庫数',
-        'comment' => '商品詳細',
         'company_id' => 'メーカー名',
-        'image_path' => '画像',
+    
     ];
 }
 
@@ -48,10 +45,8 @@ class ProductRequest extends FormRequest
         'product_name.required' => ':attributeは必須項目です。',
         'price.required' => ':attributeは必須項目です。',
         'stock.required' => ':attributeは必須項目です。',
-        'comment.required' => ':attributeは必須項目です。',
         'company_id.required' => ':attributeは必須項目です。',
         'price.required' => ':attributeは必須項目です。',
-        'image_path.required' => ':attributeは必須項目です。',
     ];
 }
 }
